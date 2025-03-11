@@ -1,0 +1,35 @@
+import numpy as np
+
+
+def null_space(A, atol=1e-13, rtol=0):
+    A = np.atleast_2d(A)
+    u, s, vh = np.linalg.svd(A)
+    t = max(atol, rtol * s[0])
+    nnz = (s >= t).sum()
+    ns = vh[nnz:].conj().T.copy()
+    return ns
+
+
+def orthogonal_comp(A):
+    ns_a = null_space(A)
+    ns_at = null_space(A.T)
+
+    rs_a = A
+
+    return ns_a, ns_at, rs_a
+
+A = np.array([[1, 2, 1],
+              [2, 4, 3],
+              [3, 6, 4]])
+
+null_a_a, null_s_at, row_s_a = orthogonal_comp(A)
+
+print("Vector orthogonal to the row space")
+print(null_a_a)
+
+print("\nVector orthogonal to the column space")
+print(null_s_at)
+
+print("\nVector orthogonal to the null space")
+for i, row in enumerate(row_s_a):
+    print(f" {i+1}: {row}")
