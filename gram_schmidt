@@ -1,0 +1,24 @@
+import numpy as np
+
+def gram_schmidt(vectors):
+    orthogonal_vectors = []
+    for v in vectors:
+        u = v.copy()
+        for w in orthogonal_vectors:
+            u -= np.dot(v, w) / np.dot(w, w) * w
+        orthogonal_vectors.append(u)
+    return orthogonal_vectors
+
+vectors = []
+n = int(input("number of vectors: "))
+d = int(input("dimension of the vectors: "))
+
+for i in range(n):
+    vec = np.array([float(input(f"element {j + 1} of vector {i + 1}: ")) for j in range(d)])
+    vectors.append(vec)
+
+ov = gram_schmidt(vectors)
+
+print("Orthogonal vectors:")
+for v in ov:
+    print(np.array2string(v, precision=0, floatmode='fixed'))
